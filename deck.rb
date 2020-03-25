@@ -10,17 +10,26 @@ class Deck
   end
   
   def build_cards
+    card = []
     name = (2..10).to_a + %w[A K Q B]
     suit = ["\u2660", "\u2663", "\u2665", "\u2666"]
     name.each do |name|
       suit.each do |suit|
-        @cards << Card.new(name, suit)
-        puts @cards.inspect
-        puts name.inspect
-        puts suit.inspect
+        card << Card.new(name, suit)
+        cards = card.last 
+        #@cards << cards
+        puts cards.inspect
+        #puts @cards.inspect
+
       end
+      #mix
     end
   end
+  #puts @cards
+  def mix
+    @cards.shuffle!
+  end
+  puts @cards
 end
-Card.new.build_cards
+Deck.new.build_cards
 

@@ -11,7 +11,7 @@ class Card
     @suit = suit
     @points = points
     assign
-  end 
+  end
 
   def assign
     assign_points

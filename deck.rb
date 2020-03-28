@@ -22,7 +22,5 @@ class Deck
       end
     end
     cards.shuffle!
-    puts cards.inspect
   end
 end
-Deck.new.build_cards

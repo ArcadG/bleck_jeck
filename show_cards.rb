@@ -8,12 +8,12 @@ module Show
   end
 
   def show_cards_dealer
-    dealer.cards.each do |card|
-    puts '**'
+    dealer.cards.each do |_card|
+      puts '**'
     end
   end
 
-  def open_cards 
+  def open_cards
     dealer.cards.each do |card|
       puts "#{card.name}#{card.suit}"
     end

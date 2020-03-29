@@ -1,8 +1,9 @@
-module Summarizing
+# frozen_string_literal: true
 
+module Summarizing
   def win
     player.total_points > dealer.total_points && player.total_points < 21 || dealer.total_points > 21
-  end 
+  end
 
   def brute_force
     player.total_points > 21
@@ -11,5 +12,4 @@ module Summarizing
   def draw
     player.total_points == dealer.total_points
   end
-  
 end

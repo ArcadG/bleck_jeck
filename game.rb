@@ -82,13 +82,11 @@ class Game
       puts player.name.to_s
       show_cards_player
       puts "Сумма Ваших очков равна: #{player.total_points}"
-      if brute_force
-        total
-      end
+      total if brute_force
     else
       puts 'Вы уже набрали максимальное количество карт'
       game_menu
-    end 
+    end
     dealer_game
   end
 
@@ -128,7 +126,7 @@ class Game
       puts 'ВЫ ПРОИГРАЛИ'
       dealer.bank += jackpot
       puts "В банке #{player.bank}$"
-    elsif draw 
+    elsif draw
       puts 'НИЧЬЯ'
       player.bank += rate
       dealer.bank += rate

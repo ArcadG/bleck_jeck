@@ -3,12 +3,12 @@
 require_relative 'deck'
 require_relative 'player'
 require_relative 'show_cards'
-require_relative 'points'
+require_relative 'summarizing'
 
 class Game
-  attr_accessor :player, :dealer, :deck, :bank, :jackpot, :rate
+  attr_reader :player, :dealer, :deck, :bank, :jackpot, :rate
   include Show
-  include Points
+  include Summarizing
 
   def initialize
     @dealer = Player.new('Диллер', 100)
@@ -48,8 +48,11 @@ class Game
       player.cards << deck.cards.shift
       dealer.cards << deck.cards.shift
     end
+    player.sum_points
+    dealer.sum_points
     puts player.name.to_s
     show_cards_player
+    puts "Сумма Ваших очков равна: #{player.total_points}"
     puts dealer.name.to_s
     show_cards_dealer
     game_menu
@@ -75,13 +78,18 @@ class Game
   def add_card
     if player.cards.length < 3
       player.cards << deck.cards.shift
+      player.sum_points
       puts player.name.to_s
       show_cards_player
-      dealer_game
+      puts "Сумма Ваших очков равна: #{player.total_points}"
+      if brute_force
+        total
+      end
     else
       puts 'Вы уже набрали максимальное количество карт'
       game_menu
-    end
+    end 
+    dealer_game
   end
 
   def dealer_game
@@ -101,29 +109,30 @@ class Game
   def total
     puts player.name.to_s
     show_cards_player
+    puts "Сумма Ваших очков равна: #{player.total_points}"
     puts dealer.name.to_s
     open_cards
+    dealer.sum_points
+    puts "Сумма очков #{dealer.name} равна: #{dealer.total_points}"
     game_total
   end
 
   def game_total
     dealer.sum_points
     player.sum_points
-    if player.total_points == dealer.total_points ||
-       player.total_points > 21 && dealer.total_points > 21
-      puts 'Ничья'
+    if win
+      puts 'ВЫ ВЫИГРАЛИ'
+      player.bank += jackpot
+      puts "В банке #{player.bank}$"
+    elsif brute_force || player.total_points < dealer.total_points
+      puts 'ВЫ ПРОИГРАЛИ'
+      dealer.bank += jackpot
+      puts "В банке #{player.bank}$"
+    elsif draw 
+      puts 'НИЧЬЯ'
       player.bank += rate
       dealer.bank += rate
       puts "В банке #{player.bank}$"
-    elsif player.total_points > dealer.total_points && player.total_points < 22 ||
-          player.total_points < dealer.total_points && dealer.total_points > 21
-      puts 'Вы выиграли'
-      player.bank += jackpot
-      puts "В банке #{player.bank}$"
-    else
-      puts 'Вы проиграли'
-      puts "В банке #{player.bank}$"
-      dealer.bank += jackpot
     end
     restart_menu
   end
@@ -136,6 +145,8 @@ class Game
     when '1'
       if player.bank < 10 || dealer.bank < 10
         puts 'У одного из играющих банк пуст'
+        dealer.clear
+        menu
       else
         restart
       end

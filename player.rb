@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+require_relative 'points'
+
 class Player
-  attr_accessor :name, :bank, :cards, :total_points
+  attr_accessor :bank
+  attr_reader :name, :cards, :total_points
+  include Points
+
   def initialize(name, bank)
     @name = name
     @bank = bank
@@ -11,6 +16,7 @@ class Player
   def sum_points
     @total_points = 0
     @cards.each { |card| @total_points += card.points }
+    points_ace
   end
 
   def clear

@@ -10,4 +10,12 @@ module Points
                 @name
               end
   end
+  
+  def points_ace
+    if @cards.size == 2 && @cards.last.name == 'A' && @total_points > 21
+      @total_points -= 10
+    elsif @cards.size == 3 && @cards.last.name == 'A' && @total_points > 21
+      @total_points -= 10   
+    end
+  end
 end

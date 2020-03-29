@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'card'
-require_relative 'points'
 
 class Deck
   attr_reader :cards
-  include Points
 
   def initialize
     @cards = build_cards

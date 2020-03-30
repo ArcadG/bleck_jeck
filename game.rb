@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+#require_relative 'interface'
 require_relative 'deck'
 require_relative 'player'
 require_relative 'show_cards'
@@ -12,26 +13,13 @@ class Game
 
   def initialize
     @dealer = Player.new('Диллер', 100)
+    @rate = 10
   end
 
-  def menu
-    puts '-------------- БЛЕК ДЖЕК -------------------'
-    puts 'Хотите сыграть?'
-    puts 'Нажмите: 1 - Да. или 2 - Нет.'
-    input = gets.chomp
-    case input
-    when '1'
-      puts 'Введите ваше имя'
-      input = gets.chomp.to_s
-      @player = Player.new(input, 100)
-      @rate = 10
-      place_bet
-    when '2'
-      exit
-    else
-      menu
+  def player_creation(input)
+    @player = Player.new(input, 100)
+    place_bet
     end
-  end
 
   private
 
@@ -56,38 +44,6 @@ class Game
     puts dealer.name.to_s
     show_cards_dealer
     game_menu
-  end
-
-  def game_menu
-    puts '1 - Добавить карту'
-    puts '2 - Пропустить ход'
-    puts '3 - Вскрыть карты'
-    input = gets.chomp
-    case input
-    when '1'
-      add_card
-    when '2'
-      dealer_game
-    when '3'
-      total
-    else
-      game_menu
-    end
-  end
-
-  def add_card
-    if player.cards.length < 3
-      player.cards << deck.cards.shift
-      player.sum_points
-      puts player.name.to_s
-      show_cards_player
-      puts "Сумма Ваших очков равна: #{player.total_points}"
-      total if brute_force
-    else
-      puts 'Вы уже набрали максимальное количество карт'
-      game_menu
-    end
-    dealer_game
   end
 
   def dealer_game
@@ -162,4 +118,4 @@ class Game
   end
 end
 
-Game.new.menu
+# Game.new.menu

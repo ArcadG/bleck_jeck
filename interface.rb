@@ -3,10 +3,10 @@
 require_relative 'game'
 
 class Interface
-  attr_reader :g
+  attr_reader :game
 
   def initialize
-    @g = Game.new
+    @game = Game.new
   end
 
   def menu
@@ -18,7 +18,8 @@ class Interface
     when '1'
       puts 'Введите ваше имя'
       input = gets.chomp.to_s
-      @g.player_creation(input)
+      game.player_creation(input)
+      game.deal_cards(self)
     when '2'
       exit
     else
@@ -26,7 +27,7 @@ class Interface
     end
   end
 
-  private
+  #private
 
   def game_menu
     puts '1 - Добавить карту'
@@ -35,13 +36,28 @@ class Interface
     input = gets.chomp
     case input
     when '1'
-      @g.add_card
+      game.add_card
+      game.dealer_game(self)
     when '2'
-      @g.dealer_game
+      game.dealer_game(self)
     when '3'
-      @g.total
+      game.total
     else
       game_menu
+    end
+  end
+
+  def restart_menu
+    puts 'Продолжим?'
+    puts 'Нажмите: 1 - Да, 2 - Нет'
+    input = gets.chomp
+    case input
+    when '1'
+      game.restart(self)
+    when '2'
+      exit
+    else
+      restart_menu
     end
   end
 end

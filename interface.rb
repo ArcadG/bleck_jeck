@@ -6,7 +6,7 @@ class Interface
   attr_reader :game
 
   def initialize
-    @game = Game.new
+    @game = Game.new(self)
   end
 
   def menu
@@ -19,15 +19,12 @@ class Interface
       puts 'Введите ваше имя'
       input = gets.chomp.to_s
       game.player_creation(input)
-      game.deal_cards(self)
     when '2'
       exit
     else
       menu
     end
   end
-
-  #private
 
   def game_menu
     puts '1 - Добавить карту'
@@ -37,9 +34,8 @@ class Interface
     case input
     when '1'
       game.add_card
-      game.dealer_game(self)
     when '2'
-      game.dealer_game(self)
+      game.dealer_game
     when '3'
       game.total
     else
@@ -53,7 +49,7 @@ class Interface
     input = gets.chomp
     case input
     when '1'
-      game.restart(self)
+      game.restart
     when '2'
       exit
     else
